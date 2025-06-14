@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+
+{% block title %}Détails de la Candidature - Admin{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">
+                    <i class="fas fa-clipboard-check me-2"></i>Candidature #{{ application.id }}
+                </h2>
+                <div class="d-flex">
+                    <a href="{{ url_for('admin.applications') }}" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-arrow-left me-1"></i>Retour aux Candidatures
+                    </a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                        <i class="fas fa-trash me-1"></i>Supprimer
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="alert 
+                    {% if application.status == 'pending' %}alert-warning
+                    {% elif application.status == 'approved' %}alert-success
+                    {% elif application.status == 'rejected' %}alert-danger
+                    {% endif %}" role="alert">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <h4 class="alert-heading mb-1">Statut: 
+                                {% if application.status == 'pending' %}En Attente
+                                {% elif application.status == 'approved' %}Approuvée
+                                {% elif application.status == 'rejected' %}Rejetée
+                                {% endif %}
+                            </h4>
+                            <p class="mb-0">
+                                Soumise le: {{ application.application_date.strftime('%Y-%m-%d %H:%M') }}
+                                {% if application.review_date %}
+                                <br>Examinée le: {{ application.review_date.strftime('%Y-%m-%d %H:%M') }}
+                                {% endif %}
+                            </p>
+                        </div>
+                        {% if application.status == 'pending' %}
+                        <div class="ms-auto">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#approveModal">
+                                <i class="fas fa-check me-1"></i>Approuver
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal">
+                                <i class="fas fa-times me-1"></i>Rejeter
+                            </button>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Candidate Information -->
+    <div class="col-lg-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-user me-2"></i>Informations du Candidat</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <th style="width: 30%;">Nom Complet</th>
+                                <td>{{ candidate.first_name }} {{ candidate.last_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date de Naissance</th>
+                                <td>{{ candidate.date_of_birth.strftime('%Y-%m-%d') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ candidate.email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Téléphone</th>
+                                <td>{{ candidate.phone }}</td>
+                            </tr>
+                            <tr>
+                                <th>Adresse</th>
+                                <td>{{ candidate.address }}<br>{{ candidate.city }}, {{ candidate.postal_code }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date d'Inscription</th>
+                                <td>{{ candidate.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Application Documents -->
+    <div class="col-lg-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-file-alt me-2"></i>Documents</h3>
+            </div>
+            <div class="card-body">
+                {% if documents %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Type de Document</th>
+                                <th>Statut</th>
+                                <th>Téléchargé le</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for document in documents %}
+                            <tr>
+                                <td>{{ document.document_type|replace('_', ' ')|title }}</td>
+                                <td>
+                                    {% if document.status == 'pending' %}
+                                    <span class="badge bg-warning">En Attente</span>
+                                    {% elif document.status == 'signed_candidate' %}
+                                    <span class="badge bg-info">Signé par le Candidat</span>
+                                    {% elif document.status == 'signed_guardian' %}
+                                    <span class="badge bg-primary">Signé par le Tuteur</span>
+                                    {% elif document.status == 'complete' %}
+                                    <span class="badge bg-success">Complet</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ document.uploaded_date.strftime('%Y-%m-%d') }}</td>
+                                <td>
+                                    <a href="{{ url_for('admin.view_document', document_id=document.id) }}" class="btn btn-sm btn-primary" target="_blank">
+                                        <i class="fas fa-eye me-1"></i>Voir
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>Aucun document disponible pour cette candidature.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Guardian Information -->
+    <div class="col-lg-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-users me-2"></i>Tuteurs Légaux</h3>
+            </div>
+            <div class="card-body">
+                {% if guardians %}
+                <div class="accordion" id="guardiansAccordion">
+                    {% for guardian in guardians %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{ guardian.id }}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ guardian.id }}" aria-expanded="false" aria-controls="collapse{{ guardian.id }}">
+                                {{ guardian.first_name }} {{ guardian.last_name }} - {{ guardian.relationship }}
+                            </button>
+                        </h2>
+                        <div id="collapse{{ guardian.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ guardian.id }}" data-bs-parent="#guardiansAccordion">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-4">Email</dt>
+                                            <dd class="col-sm-8">{{ guardian.email }}</dd>
+                                            
+                                            <dt class="col-sm-4">Téléphone</dt>
+                                            <dd class="col-sm-8">{{ guardian.phone }}</dd>
+                                        </dl>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-4">Adresse</dt>
+                                            <dd class="col-sm-8">{{ guardian.address }}<br>{{ guardian.city }}, {{ guardian.postal_code }}</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>Aucune information de tuteur trouvée pour cette candidature.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Application Notes -->
+{% if application.status != 'pending' %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-sticky-note me-2"></i>Notes d'Examen</h3>
+            </div>
+            <div class="card-body">
+                {% if application.notes %}
+                <div class="p-3 bg-secondary bg-opacity-25 rounded">
+                    {{ application.notes|nl2br }}
+                </div>
+                {% else %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>Aucune note n'a été ajoutée pendant l'examen.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Approve Modal -->
+<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="approveModalLabel">Approuver la Candidature</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('admin.approve_application', application_id=application.id) }}" method="POST">
+                <div class="modal-body">
+                    <p>
+                        Vous êtes sur le point d'approuver la candidature de <strong>{{ candidate.first_name }} {{ candidate.last_name }}</strong>.
+                        Cela créera des comptes utilisateurs pour le candidat et ses tuteurs légaux.
+                    </p>
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes (optionnel)</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Ajouter des notes supplémentaires..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check me-1"></i>Approuver la Candidature
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rejectModalLabel">Rejeter la Candidature</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('admin.reject_application', application_id=application.id) }}" method="POST">
+                <div class="modal-body">
+                    <p>
+                        Vous êtes sur le point de rejeter la candidature de <strong>{{ candidate.first_name }} {{ candidate.last_name }}</strong>.
+                        Le candidat sera notifié par email.
+                    </p>
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Motif du Rejet (obligatoire)</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Veuillez fournir un motif de rejet..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-times me-1"></i>Rejeter la Candidature
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

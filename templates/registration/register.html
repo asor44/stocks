@@ -1,0 +1,466 @@
+{% extends 'base.html' %}
+
+{% block title %}Formulaire d'Inscription{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0"><i class="fas fa-user-plus me-2"></i>Formulaire d'Inscription du Candidat</h2>
+            </div>
+            <div class="card-body">
+                <form id="registration-form" class="needs-validation" method="POST" action="{{ url_for('registration.register') }}" novalidate>
+                    <!-- Candidate Information Section -->
+                    <div class="form-section">
+                        <h3>Informations du Candidat</h3>
+                        <p class="text-muted">Veuillez fournir vos informations personnelles.</p>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="candidate_first_name" class="form-label">Prénom</label>
+                                <input type="text" class="form-control" id="candidate_first_name" name="candidate_first_name" required>
+                                <div class="invalid-feedback">Le prénom est obligatoire.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_last_name" class="form-label">Nom</label>
+                                <input type="text" class="form-control" id="candidate_last_name" name="candidate_last_name" required>
+                                <div class="invalid-feedback">Le nom est obligatoire.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_dob" class="form-label">Date de Naissance</label>
+                                <input type="date" class="form-control" id="candidate_dob" name="candidate_dob" required>
+                                <div class="invalid-feedback">La date de naissance est obligatoire.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_birth_place" class="form-label">Lieu de Naissance</label>
+                                <input type="text" class="form-control" id="candidate_birth_place" name="candidate_birth_place">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="candidate_email" name="candidate_email" required>
+                                <div class="invalid-feedback">Veuillez fournir une adresse email valide.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_password" class="form-label">Mot de passe</label>
+                                <input type="password" class="form-control" id="candidate_password" name="candidate_password" required>
+                                <div class="invalid-feedback">Le mot de passe est obligatoire.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_password_confirm" class="form-label">Confirmer le mot de passe</label>
+                                <input type="password" class="form-control" id="candidate_password_confirm" name="candidate_password_confirm" required>
+                                <div class="invalid-feedback">Veuillez confirmer le mot de passe.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_phone" class="form-label">Numéro de Téléphone</label>
+                                <input type="tel" class="form-control" id="candidate_phone" name="candidate_phone" required>
+                                <div class="invalid-feedback">Le numéro de téléphone est obligatoire.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_mobile_phone" class="form-label">Téléphone Mobile</label>
+                                <input type="tel" class="form-control" id="candidate_mobile_phone" name="candidate_mobile_phone">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_address" class="form-label">Adresse</label>
+                                <input type="text" class="form-control" id="candidate_address" name="candidate_address" required>
+                                <div class="invalid-feedback">L'adresse est obligatoire.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_city" class="form-label">Ville</label>
+                                <input type="text" class="form-control" id="candidate_city" name="candidate_city" required>
+                                <div class="invalid-feedback">La ville est obligatoire.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_postal_code" class="form-label">Code Postal</label>
+                                <input type="text" class="form-control" id="candidate_postal_code" name="candidate_postal_code" required>
+                                <div class="invalid-feedback">Le code postal est obligatoire.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_school" class="form-label">Établissement Scolaire</label>
+                                <input type="text" class="form-control" id="candidate_school" name="candidate_school">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_grade" class="form-label">Classe / Niveau</label>
+                                <input type="text" class="form-control" id="candidate_grade" name="candidate_grade">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_emergency_contact_name" class="form-label">Nom du Contact d'Urgence</label>
+                                <input type="text" class="form-control" id="candidate_emergency_contact_name" name="candidate_emergency_contact_name">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="candidate_emergency_contact_phone" class="form-label">Téléphone du Contact d'Urgence</label>
+                                <input type="tel" class="form-control" id="candidate_emergency_contact_phone" name="candidate_emergency_contact_phone">
+                            </div>
+                            <div class="col-md-12">
+                                <label for="candidate_additional_info" class="form-label">Informations Complémentaires</label>
+                                <textarea class="form-control" id="candidate_additional_info" name="candidate_additional_info" rows="3"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="candidate_first_aid_certified" name="candidate_first_aid_certified">
+                                    <label class="form-check-label" for="candidate_first_aid_certified">
+                                        Certifié aux Premiers Secours
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="candidate_image_rights" name="candidate_image_rights" checked>
+                                    <label class="form-check-label" for="candidate_image_rights">
+                                        J'autorise l'utilisation de mon image (photos, vidéos) pour la communication de l'académie
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Medical Information Section -->
+                    <div class="form-section">
+                        <h3>Informations Médicales</h3>
+                        <p class="text-muted">Ces informations sont nécessaires pour assurer votre sécurité durant les activités.</p>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="medical_certificate_date" class="form-label">Date du Certificat Médical</label>
+                                <input type="date" class="form-control" id="medical_certificate_date" name="medical_certificate_date">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="medical_doctor_name" class="form-label">Nom du Médecin</label>
+                                <input type="text" class="form-control" id="medical_doctor_name" name="medical_doctor_name">
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <p><strong>Autorisations Médicales</strong></p>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="medical_sport_allowed" name="medical_sport_allowed">
+                                    <label class="form-check-label" for="medical_sport_allowed">
+                                        Pratique du sport autorisée
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="medical_sport_competition_allowed" name="medical_sport_competition_allowed">
+                                    <label class="form-check-label" for="medical_sport_competition_allowed">
+                                        Compétition sportive autorisée
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="medical_collective_living_allowed" name="medical_collective_living_allowed">
+                                    <label class="form-check-label" for="medical_collective_living_allowed">
+                                        Vie en collectivité autorisée
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="medical_vaccinations_up_to_date" name="medical_vaccinations_up_to_date">
+                                    <label class="form-check-label" for="medical_vaccinations_up_to_date">
+                                        Vaccinations à jour
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="medical_flight_allowed" name="medical_flight_allowed">
+                                    <label class="form-check-label" for="medical_flight_allowed">
+                                        Vol en aéronef autorisé
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <p><strong>Questionnaire de Santé</strong></p>
+                                <p class="text-muted">Veuillez répondre aux questions suivantes par oui ou non.</p>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="medical_family_cardiac_death" name="medical_family_cardiac_death">
+                                    <label class="form-check-label" for="medical_family_cardiac_death">
+                                        Un membre de votre famille est-il décédé subitement d'une cause cardiaque ou inexpliquée ?
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="medical_chest_pain" name="medical_chest_pain">
+                                    <label class="form-check-label" for="medical_chest_pain">
+                                        Avez-vous ressenti une douleur dans la poitrine, des palpitations, un essoufflement inhabituel ?
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="medical_asthma" name="medical_asthma">
+                                    <label class="form-check-label" for="medical_asthma">
+                                        Avez-vous de l'asthme ou un problème respiratoire ?
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="medical_fainting" name="medical_fainting">
+                                    <label class="form-check-label" for="medical_fainting">
+                                        Avez-vous fait un malaise ou perdu connaissance pendant ou après un effort ?
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="medical_stopped_sport_for_health" name="medical_stopped_sport_for_health">
+                                    <label class="form-check-label" for="medical_stopped_sport_for_health">
+                                        Avez-vous arrêté le sport pour des raisons de santé ?
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="medical_long_term_treatment" name="medical_long_term_treatment">
+                                    <label class="form-check-label" for="medical_long_term_treatment">
+                                        Suivez-vous un traitement médical régulier ?
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="medical_pain_after_injury" name="medical_pain_after_injury">
+                                    <label class="form-check-label" for="medical_pain_after_injury">
+                                        Ressentez-vous une douleur ou un manque de force après un accident ?
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="medical_sport_interrupted_health" name="medical_sport_interrupted_health">
+                                    <label class="form-check-label" for="medical_sport_interrupted_health">
+                                        Votre pratique sportive a-t-elle été interrompue pour des raisons de santé ?
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="medical_medical_advice_needed" name="medical_medical_advice_needed">
+                                    <label class="form-check-label" for="medical_medical_advice_needed">
+                                        Pensez-vous avoir besoin d'un avis médical pour poursuivre cette activité ?
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <label for="medical_additional_info" class="form-label">Informations Médicales Complémentaires</label>
+                                <textarea class="form-control" id="medical_additional_info" name="medical_additional_info" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Physical Measurements Section -->
+                    <div class="form-section">
+                        <h3>Mensurations Physiques</h3>
+                        <p class="text-muted">Ces informations sont nécessaires pour la dotation d'équipement.</p>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="measurement_height" class="form-label">Taille (cm)</label>
+                                <input type="number" class="form-control" id="measurement_height" name="measurement_height">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurement_weight" class="form-label">Poids (kg)</label>
+                                <input type="number" class="form-control" id="measurement_weight" name="measurement_weight">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurement_shoe_size" class="form-label">Pointure</label>
+                                <input type="number" class="form-control" id="measurement_shoe_size" name="measurement_shoe_size">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurement_head_size" class="form-label">Tour de tête (cm)</label>
+                                <input type="number" class="form-control" id="measurement_head_size" name="measurement_head_size">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurement_neck_size" class="form-label">Tour de cou (cm)</label>
+                                <input type="number" class="form-control" id="measurement_neck_size" name="measurement_neck_size">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurement_chest_size" class="form-label">Tour de poitrine (cm)</label>
+                                <input type="number" class="form-control" id="measurement_chest_size" name="measurement_chest_size">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurement_waist_size" class="form-label">Tour de taille (cm)</label>
+                                <input type="number" class="form-control" id="measurement_waist_size" name="measurement_waist_size">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurement_bust_height" class="form-label">Hauteur du buste (cm)</label>
+                                <input type="number" class="form-control" id="measurement_bust_height" name="measurement_bust_height">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurement_inseam" class="form-label">Entrejambe (cm)</label>
+                                <input type="number" class="form-control" id="measurement_inseam" name="measurement_inseam">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Guardian Information Section -->
+                    <div class="form-section" id="guardians-section">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3>Informations du Tuteur Légal</h3>
+                            <button type="button" id="add-guardian" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-plus me-1"></i>Ajouter un Tuteur
+                            </button>
+                        </div>
+                        <p class="text-muted">Veuillez fournir les informations concernant votre/vos tuteur(s) légal/légaux.</p>
+                        
+                        <!-- Hidden field to track number of guardians -->
+                        <input type="hidden" id="num_guardians" name="num_guardians" value="1">
+                        
+                        <!-- Guardian 1 (first guardian is required) -->
+                        <div class="guardian-container">
+                            <h4>Tuteur Légal 1</h4>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="guardian_1_first_name" class="form-label">Prénom</label>
+                                    <input type="text" class="form-control" id="guardian_1_first_name" name="guardian_1_first_name" required>
+                                    <div class="invalid-feedback">Le prénom est obligatoire.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="guardian_1_last_name" class="form-label">Nom</label>
+                                    <input type="text" class="form-control" id="guardian_1_last_name" name="guardian_1_last_name" required>
+                                    <div class="invalid-feedback">Le nom est obligatoire.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="guardian_1_relationship" class="form-label">Relation</label>
+                                    <select class="form-select" id="guardian_1_relationship" name="guardian_1_relationship" required>
+                                        <option value="">Sélectionnez une relation...</option>
+                                        <option value="Parent">Parent</option>
+                                        <option value="Legal Guardian">Tuteur Légal</option>
+                                        <option value="Other">Autre</option>
+                                    </select>
+                                    <div class="invalid-feedback">La relation est obligatoire.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="guardian_1_email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="guardian_1_email" name="guardian_1_email" required>
+                                    <div class="invalid-feedback">Veuillez fournir une adresse email valide.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="guardian_1_phone" class="form-label">Numéro de Téléphone</label>
+                                    <input type="tel" class="form-control" id="guardian_1_phone" name="guardian_1_phone" required>
+                                    <div class="invalid-feedback">Le numéro de téléphone est obligatoire.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="guardian_1_address" class="form-label">Adresse</label>
+                                    <input type="text" class="form-control" id="guardian_1_address" name="guardian_1_address" required>
+                                    <div class="invalid-feedback">L'adresse est obligatoire.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="guardian_1_city" class="form-label">Ville</label>
+                                    <input type="text" class="form-control" id="guardian_1_city" name="guardian_1_city" required>
+                                    <div class="invalid-feedback">La ville est obligatoire.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="guardian_1_postal_code" class="form-label">Code Postal</label>
+                                    <input type="text" class="form-control" id="guardian_1_postal_code" name="guardian_1_postal_code" required>
+                                    <div class="invalid-feedback">Le code postal est obligatoire.</div>
+                                </div>
+                                <div class="col-12 text-end">
+                                    <button type="button" class="btn btn-sm btn-outline-danger remove-guardian d-none">
+                                        <i class="fas fa-trash me-1"></i>Supprimer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Guardian Template for JavaScript cloning (hidden) -->
+                    <div id="guardian-template" class="d-none">
+                        <h4>Modèle de Tuteur Légal</h4>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="guardian_template_first_name" class="form-label">Prénom</label>
+                                <input type="text" class="form-control" id="guardian_template_first_name" name="guardian_template_first_name" disabled>
+                                <div class="invalid-feedback">Le prénom est obligatoire.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="guardian_template_last_name" class="form-label">Nom</label>
+                                <input type="text" class="form-control" id="guardian_template_last_name" name="guardian_template_last_name" disabled>
+                                <div class="invalid-feedback">Le nom est obligatoire.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="guardian_template_relationship" class="form-label">Relation</label>
+                                <select class="form-select" id="guardian_template_relationship" name="guardian_template_relationship" disabled>
+                                    <option value="">Sélectionnez une relation...</option>
+                                    <option value="Parent">Parent</option>
+                                    <option value="Legal Guardian">Tuteur Légal</option>
+                                    <option value="Other">Autre</option>
+                                </select>
+                                <div class="invalid-feedback">La relation est obligatoire.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="guardian_template_email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="guardian_template_email" name="guardian_template_email" disabled>
+                                <div class="invalid-feedback">Veuillez fournir une adresse email valide.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="guardian_template_phone" class="form-label">Numéro de Téléphone</label>
+                                <input type="tel" class="form-control" id="guardian_template_phone" name="guardian_template_phone" disabled>
+                                <div class="invalid-feedback">Le numéro de téléphone est obligatoire.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="guardian_template_address" class="form-label">Adresse</label>
+                                <input type="text" class="form-control" id="guardian_template_address" name="guardian_template_address" disabled>
+                                <div class="invalid-feedback">L'adresse est obligatoire.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="guardian_template_city" class="form-label">Ville</label>
+                                <input type="text" class="form-control" id="guardian_template_city" name="guardian_template_city" disabled>
+                                <div class="invalid-feedback">La ville est obligatoire.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="guardian_template_postal_code" class="form-label">Code Postal</label>
+                                <input type="text" class="form-control" id="guardian_template_postal_code" name="guardian_template_postal_code" disabled>
+                                <div class="invalid-feedback">Le code postal est obligatoire.</div>
+                            </div>
+                            <div class="col-12 text-end">
+                                <button type="button" class="btn btn-sm btn-outline-danger remove-guardian">
+                                    <i class="fas fa-trash me-1"></i>Supprimer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Section -->
+                    <div class="form-section">
+                        <h3>Confirmation</h3>
+                        <p class="text-muted">
+                            En soumettant ce formulaire, vous confirmez que toutes les informations fournies sont exactes.
+                            Après soumission, vous recevrez un email avec les documents à signer.
+                        </p>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="confirm_info" name="confirm_info" required>
+                            <label class="form-check-label" for="confirm_info">
+                                Je confirme que toutes les informations fournies sont correctes et complètes.
+                            </label>
+                            <div class="invalid-feedback">
+                                Vous devez confirmer que toutes les informations sont correctes avant de continuer.
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>Soumettre l'Inscription
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,716 @@
+{% extends 'base.html' %}
+
+{% block title %}Inscription par Étapes - Étape {{ step }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Accueil</a></li>
+                    <li class="breadcrumb-item active">Inscription par Étapes</li>
+                </ol>
+            </nav>
+            
+            <div class="progress mb-4">
+                <div class="progress-bar bg-primary" role="progressbar" style="width: {{ step * 20 }}%" 
+                    aria-valuenow="{{ step * 20 }}" aria-valuemin="0" aria-valuemax="100">
+                    Étape {{ step }} / 5
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        {% if step == 1 %}
+                            Étape 1: Informations Personnelles
+                        {% elif step == 2 %}
+                            Étape 2: Mensurations
+                        {% elif step == 3 %}
+                            Étape 3: Tuteurs Légaux
+                        {% elif step == 4 %}
+                            Étape 4: Documents à Signer
+                        {% elif step == 5 %}
+                            Étape 5: Finalisation
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% if step == 1 %}
+                            <!-- Étape 1: Informations personnelles -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 class="border-bottom pb-2">Informations d'Identité</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="first_name" class="form-label required">Prénom</label>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="last_name" class="form-label required">Nom</label>
+                                        <input type="text" class="form-control" id="last_name" name="last_name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="date_of_birth" class="form-label required">Date de naissance</label>
+                                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="nationality" class="form-label required">Nationalité</label>
+                                        <input type="text" class="form-control" id="nationality" name="nationality" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="birth_place" class="form-label required">Lieu de naissance</label>
+                                        <input type="text" class="form-control" id="birth_place" name="birth_place" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <label for="birth_place_postal_code" class="form-label required">Code postal du lieu de naissance</label>
+                                        <input type="text" class="form-control" id="birth_place_postal_code" name="birth_place_postal_code" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <label for="birth_place_city" class="form-label required">Ville de naissance</label>
+                                        <input type="text" class="form-control" id="birth_place_city" name="birth_place_city" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 class="border-bottom pb-2">Coordonnées</h4>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label required">Adresse</label>
+                                        <input type="text" class="form-control" id="address" name="address" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="city" class="form-label required">Ville</label>
+                                        <input type="text" class="form-control" id="city" name="city" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="postal_code" class="form-label required">Code postal</label>
+                                        <input type="text" class="form-control" id="postal_code" name="postal_code" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label required">Téléphone</label>
+                                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label required">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 class="border-bottom pb-2">Information Scolaire</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="school" class="form-label required">Établissement scolaire</label>
+                                        <input type="text" class="form-control" id="school" name="school" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="grade" class="form-label required">Classe</label>
+                                        <input type="text" class="form-control" id="grade" name="grade" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="first_aid_certified" name="first_aid_certified">
+                                        <label class="form-check-label" for="first_aid_certified">
+                                            J'ai un certificat de premiers secours (PSC1, SST, etc.)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 class="border-bottom pb-2">Documents à téléverser</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="motivation_letter" class="form-label">Lettre de motivation</label>
+                                        <input type="file" class="form-control" id="motivation_letter" name="motivation_letter">
+                                        <div class="form-text">Format PDF, JPG ou PNG, 5 Mo maximum</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="vital_card_copy" class="form-label">Copie de la carte vitale</label>
+                                        <input type="file" class="form-control" id="vital_card_copy" name="vital_card_copy">
+                                        <div class="form-text">Format PDF, JPG ou PNG, 5 Mo maximum</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="id_card_copy" class="form-label">Copie de la carte d'identité</label>
+                                        <input type="file" class="form-control" id="id_card_copy" name="id_card_copy">
+                                        <div class="form-text">Format PDF, JPG ou PNG, 5 Mo maximum</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="insurance_certificate" class="form-label">Attestation d'assurance</label>
+                                        <input type="file" class="form-control" id="insurance_certificate" name="insurance_certificate">
+                                        <div class="form-text">Format PDF, JPG ou PNG, 5 Mo maximum</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="recent_photo" class="form-label">Photo récente</label>
+                                        <input type="file" class="form-control" id="recent_photo" name="recent_photo">
+                                        <div class="form-text">Format JPG ou PNG, 5 Mo maximum</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="mutual_card_copy" class="form-label">Copie de la carte mutuelle (optionnel)</label>
+                                        <input type="file" class="form-control" id="mutual_card_copy" name="mutual_card_copy">
+                                        <div class="form-text">Format PDF, JPG ou PNG, 5 Mo maximum</div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Tous ces documents peuvent être téléversés plus tard, mais ils seront obligatoires avant la finalisation du dossier à l'étape 4.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 class="border-bottom pb-2">Créer votre compte</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label required">Mot de passe</label>
+                                        <input type="password" class="form-control" id="password" name="password" required>
+                                        <div class="form-text">8 caractères minimum, avec au moins une lettre et un chiffre</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="password_confirm" class="form-label required">Confirmation du mot de passe</label>
+                                        <input type="password" class="form-control" id="password_confirm" name="password_confirm" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% elif step == 2 %}
+                            <!-- Étape 2: Mensurations -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Ces informations sont nécessaires pour la préparation de votre uniforme et équipement.
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="height" class="form-label required">Taille (cm)</label>
+                                        <input type="number" class="form-control" id="height" name="height" min="120" max="220" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="weight" class="form-label required">Poids (kg)</label>
+                                        <input type="number" class="form-control" id="weight" name="weight" min="30" max="150" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="shoe_size" class="form-label required">Pointure</label>
+                                        <input type="number" class="form-control" id="shoe_size" name="shoe_size" min="35" max="48" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 class="border-bottom pb-2">Mensurations Détaillées</h4>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="head_size" class="form-label required">Tour de tête (cm)</label>
+                                        <input type="number" class="form-control" id="head_size" name="head_size" min="50" max="70" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="neck_size" class="form-label required">Tour de cou (cm)</label>
+                                        <input type="number" class="form-control" id="neck_size" name="neck_size" min="30" max="50" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="chest_size" class="form-label required">Tour de poitrine (cm)</label>
+                                        <input type="number" class="form-control" id="chest_size" name="chest_size" min="60" max="130" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="waist_size" class="form-label required">Tour de taille (cm)</label>
+                                        <input type="number" class="form-control" id="waist_size" name="waist_size" min="60" max="130" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="bust_height" class="form-label required">Hauteur du buste (cm)</label>
+                                        <input type="number" class="form-control" id="bust_height" name="bust_height" min="40" max="80" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="inseam" class="form-label required">Hauteur entrejambe (cm)</label>
+                                        <input type="number" class="form-control" id="inseam" name="inseam" min="60" max="100" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% elif step == 3 %}
+                            <!-- Étape 3: Tuteurs légaux -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Veuillez renseigner les informations d'au moins un tuteur légal.
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <h4 class="border-bottom pb-2">Tuteur Légal 1</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="guardian1_first_name" class="form-label required">Prénom</label>
+                                        <input type="text" class="form-control" id="guardian1_first_name" name="guardian1_first_name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="guardian1_last_name" class="form-label required">Nom</label>
+                                        <input type="text" class="form-control" id="guardian1_last_name" name="guardian1_last_name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="guardian1_relationship" class="form-label required">Lien de parenté</label>
+                                        <select class="form-select" id="guardian1_relationship" name="guardian1_relationship" required>
+                                            <option value="">Sélectionnez...</option>
+                                            <option value="Père">Père</option>
+                                            <option value="Mère">Mère</option>
+                                            <option value="Tuteur">Tuteur</option>
+                                            <option value="Autre">Autre</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="guardian1_email" class="form-label required">Email</label>
+                                        <input type="email" class="form-control" id="guardian1_email" name="guardian1_email" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="guardian1_phone" class="form-label required">Téléphone</label>
+                                        <input type="tel" class="form-control" id="guardian1_phone" name="guardian1_phone" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="guardian1_address" class="form-label required">Adresse</label>
+                                        <input type="text" class="form-control" id="guardian1_address" name="guardian1_address" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="guardian1_city" class="form-label required">Ville</label>
+                                        <input type="text" class="form-control" id="guardian1_city" name="guardian1_city" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="guardian1_postal_code" class="form-label required">Code postal</label>
+                                        <input type="text" class="form-control" id="guardian1_postal_code" name="guardian1_postal_code" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="add_second_guardian" name="add_second_guardian">
+                                        <label class="form-check-label" for="add_second_guardian">
+                                            Ajouter un second tuteur légal
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div id="second_guardian_section" style="display: none;">
+                                    <div class="col-12">
+                                        <h4 class="border-bottom pb-2">Tuteur Légal 2</h4>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="guardian2_first_name" class="form-label">Prénom</label>
+                                            <input type="text" class="form-control" id="guardian2_first_name" name="guardian2_first_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="guardian2_last_name" class="form-label">Nom</label>
+                                            <input type="text" class="form-control" id="guardian2_last_name" name="guardian2_last_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="guardian2_relationship" class="form-label">Lien de parenté</label>
+                                            <select class="form-select" id="guardian2_relationship" name="guardian2_relationship">
+                                                <option value="">Sélectionnez...</option>
+                                                <option value="Père">Père</option>
+                                                <option value="Mère">Mère</option>
+                                                <option value="Tuteur">Tuteur</option>
+                                                <option value="Autre">Autre</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Autres champs pour le second tuteur... -->
+                                </div>
+                            </div>
+
+                        {% elif step == 4 %}
+                            <!-- Étape 4: Documents à signer -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Utilisez notre système de signature électronique pour signer les documents requis.
+                                    </div>
+                                    
+                                    {% if not documents or documents|length == 0 %}
+                                    <div class="card mb-4">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title">Chargement des documents</h5>
+                                            <p class="card-text">Les documents nécessaires sont en cours de génération. Veuillez actualiser la page dans quelques instants.</p>
+                                            <a href="{{ url_for('registration.multi_step_register', step=4, candidate_id=candidate_id if candidate_id else (candidate.id if candidate else None)) }}" class="btn btn-primary">
+                                                <i class="fas fa-sync me-2"></i>Actualiser
+                                            </a>
+                                            <div id="generate-documents-btn" class="mt-3">
+                                                <a href="{{ url_for('registration.generate_documents_manually', candidate_id=candidate_id if candidate_id else (candidate.id if candidate else None)) }}" class="btn btn-warning">
+                                                    <i class="fas fa-file-pdf me-2"></i>Générer les documents manuellement
+                                                </a>
+                                                
+                                                <button type="button" class="btn btn-outline-secondary mt-2" id="debug-info-toggle">
+                                                    <i class="fas fa-bug me-2"></i>Afficher les informations de débogage
+                                                </button>
+                                                
+                                                <div id="debug-info" class="mt-3 p-3 bg-dark text-light" style="display: none; text-align: left; font-size: 0.8rem; border-radius: 5px;">
+                                                    <h6>Informations de débogage:</h6>
+                                                    {% if candidate %}
+                                                    <p><strong>Identifiant du candidat:</strong> {{ candidate.id }}</p>
+                                                    <p><strong>Status de l'application:</strong> {{ candidate.application_status }}</p>
+                                                    {% else %}
+                                                    <p><strong>Identifiant du candidat:</strong> {{ candidate_id if candidate_id else 'Non défini' }}</p>
+                                                    <p><strong>Status de l'application:</strong> Non disponible</p>
+                                                    {% endif %}
+                                                    
+                                                    {% if application %}
+                                                    <p><strong>Identifiant de l'application:</strong> {{ application.id }}</p>
+                                                    <p><strong>Année de promotion:</strong> {{ application.promotion_year }}</p>
+                                                    {% endif %}
+                                                    <p><strong>Dossier d'upload configuré:</strong> {{ config.UPLOAD_FOLDER }}</p>
+                                                    <p><strong>Répertoire courant:</strong> {{ get_cwd() }}</p>
+                                                    
+                                                    {% if documents %}
+                                                    <h6 class="mt-3">Documents enregistrés:</h6>
+                                                    <ul>
+                                                    {% for document in documents %}
+                                                        <li>
+                                                            <strong>{{ document.document_type_display() }}:</strong><br>
+                                                            ID: {{ document.id }}<br>
+                                                            Nom fichier: {{ document.filename }}<br>
+                                                            Chemin: {{ document.file_path }}<br>
+                                                            Statut: {{ document.status }}
+                                                        </li>
+                                                    {% endfor %}
+                                                    </ul>
+                                                    {% endif %}
+                                                </div>
+                                                
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function() {
+                                                        const debugToggle = document.getElementById('debug-info-toggle');
+                                                        const debugInfo = document.getElementById('debug-info');
+                                                        
+                                                        if (debugToggle && debugInfo) {
+                                                            debugToggle.addEventListener('click', function() {
+                                                                if (debugInfo.style.display === 'none') {
+                                                                    debugInfo.style.display = 'block';
+                                                                    debugToggle.innerHTML = '<i class="fas fa-bug me-2"></i>Masquer les informations de débogage';
+                                                                } else {
+                                                                    debugInfo.style.display = 'none';
+                                                                    debugToggle.innerHTML = '<i class="fas fa-bug me-2"></i>Afficher les informations de débogage';
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Documents à signer</h5>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Document</th>
+                                                            <th>Statut</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for document in documents %}
+                                                        <tr>
+                                                            <td>{{ document.document_type_display }}</td>
+                                                            <td>
+                                                                {% if document.status == 'pending' %}
+                                                                    <span class="badge bg-warning">En attente</span>
+                                                                {% elif document.status == 'signed_candidate' %}
+                                                                    <span class="badge bg-info">Signé par vous</span>
+                                                                {% elif document.status == 'signed_guardian' %}
+                                                                    <span class="badge bg-info">Signé par tuteur</span>
+                                                                {% elif document.status == 'complete' %}
+                                                                    <span class="badge bg-success">Complet</span>
+                                                                {% endif %}
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{ url_for('registration.view_document_by_id', document_id=document.id) }}" class="btn btn-sm btn-info" target="_blank">
+                                                                    <i class="fas fa-eye me-1"></i>Voir
+                                                                </a>
+                                                                {% if document.status == 'pending' %}
+                                                                <a href="{{ url_for('registration.sign_document', document_id=document.id) }}" class="btn btn-sm btn-primary">
+                                                                    <i class="fas fa-signature me-1"></i>Signer
+                                                                </a>
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    {% if missing_documents %}
+                                    <div class="alert alert-danger">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <strong>Documents manquants :</strong>
+                                        <ul class="mb-0 mt-2">
+                                            {% for doc in missing_documents %}
+                                            <li>{{ doc }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        <p class="mt-2 mb-0">Tous ces documents sont obligatoires pour pouvoir continuer.</p>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-12 mt-4">
+                                    <h4 class="border-bottom pb-2">Documents d'identité manquants</h4>
+                                    <p>Si vous n'avez pas téléversé certains documents à l'étape 1, vous devez les téléverser maintenant :</p>
+                                </div>
+                                
+                                {% if not candidate or not candidate.motivation_letter %}
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="motivation_letter" class="form-label required">Lettre de motivation</label>
+                                        <input type="file" class="form-control" id="motivation_letter" name="motivation_letter" required>
+                                        <div class="form-text">Format PDF, JPG ou PNG, 5 Mo maximum</div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                
+                                {% if not candidate or not candidate.vital_card_copy %}
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="vital_card_copy" class="form-label required">Copie de la carte vitale</label>
+                                        <input type="file" class="form-control" id="vital_card_copy" name="vital_card_copy" required>
+                                        <div class="form-text">Format PDF, JPG ou PNG, 5 Mo maximum</div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                
+                                {% if not candidate or not candidate.id_card_copy %}
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="id_card_copy" class="form-label required">Copie de la carte d'identité</label>
+                                        <input type="file" class="form-control" id="id_card_copy" name="id_card_copy" required>
+                                        <div class="form-text">Format PDF, JPG ou PNG, 5 Mo maximum</div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                
+                                {% if not candidate or not candidate.insurance_certificate %}
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="insurance_certificate" class="form-label required">Attestation d'assurance</label>
+                                        <input type="file" class="form-control" id="insurance_certificate" name="insurance_certificate" required>
+                                        <div class="form-text">Format PDF, JPG ou PNG, 5 Mo maximum</div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                
+                                {% if not candidate or not candidate.recent_photo %}
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="recent_photo" class="form-label required">Photo récente</label>
+                                        <input type="file" class="form-control" id="recent_photo" name="recent_photo" required>
+                                        <div class="form-text">Format JPG ou PNG, 5 Mo maximum</div>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                        {% elif step == 5 %}
+                            <!-- Étape 5: Finalisation -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="alert alert-success mb-4">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        Votre dossier de candidature est complet. Veuillez vérifier les informations ci-dessous avant de confirmer votre inscription.
+                                    </div>
+                                </div>
+
+                                <!-- Résumé des informations du candidat -->
+                                <div class="col-12 mb-4">
+                                    <h4 class="border-bottom pb-2">Vos informations personnelles</h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>Nom :</strong> {{ candidate.first_name }} {{ candidate.last_name }}</p>
+                                            <p><strong>Date de naissance :</strong> {{ candidate.date_of_birth }}</p>
+                                            <p><strong>Nationalité :</strong> {{ candidate.nationality }}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Adresse :</strong> {{ candidate.address }}</p>
+                                            <p><strong>Code postal :</strong> {{ candidate.postal_code }}</p>
+                                            <p><strong>Ville :</strong> {{ candidate.city }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>Téléphone :</strong> {{ candidate.phone }}</p>
+                                            <p><strong>Email :</strong> {{ candidate.email }}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>École :</strong> {{ candidate.school }}</p>
+                                            <p><strong>Classe :</strong> {{ candidate.grade }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Résumé des tuteurs légaux -->
+                                <div class="col-12 mb-4">
+                                    <h4 class="border-bottom pb-2">Tuteurs légaux</h4>
+                                    {% for guardian in guardians %}
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ guardian.first_name }} {{ guardian.last_name }}</h5>
+                                            <p><strong>Lien de parenté :</strong> {{ guardian.relationship }}</p>
+                                            <p><strong>Email :</strong> {{ guardian.email }}</p>
+                                            <p><strong>Téléphone :</strong> {{ guardian.phone }}</p>
+                                            <p><strong>Adresse :</strong> {{ guardian.address }}, {{ guardian.postal_code }} {{ guardian.city }}</p>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                
+                                <!-- Confirmation finale -->
+                                <div class="col-12 mb-4">
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="final_confirmation" name="final_confirmation" required>
+                                        <label class="form-check-label" for="final_confirmation">
+                                            Je confirme que toutes les informations fournies sont exactes et que j'ai bien lu et accepté le règlement de l'Académie des Cadets de la Défense.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                        <!-- Boutons de navigation -->
+                        <div class="d-flex justify-content-between mt-4">
+                            {% if step > 1 %}
+                            <a href="{{ url_for('registration.multi_step_register', step=step-1, candidate_id=candidate.id if candidate else None) }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Précédent
+                            </a>
+                            {% else %}
+                            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-home me-2"></i>Retour à l'accueil
+                            </a>
+                            {% endif %}
+                            
+                            <button type="submit" class="btn btn-primary">
+                                {% if step < 5 %}
+                                Suivant<i class="fas fa-arrow-right ms-2"></i>
+                                {% else %}
+                                Finaliser l'inscription<i class="fas fa-check ms-2"></i>
+                                {% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Gestion de l'affichage de la section du second tuteur
+        const addSecondGuardianCheckbox = document.getElementById('add_second_guardian');
+        const secondGuardianSection = document.getElementById('second_guardian_section');
+        
+        if (addSecondGuardianCheckbox && secondGuardianSection) {
+            addSecondGuardianCheckbox.addEventListener('change', function() {
+                secondGuardianSection.style.display = this.checked ? 'block' : 'none';
+            });
+            
+            // Appliquer l'état initial
+            secondGuardianSection.style.display = addSecondGuardianCheckbox.checked ? 'block' : 'none';
+        }
+    });
+</script>
+{% endblock %}

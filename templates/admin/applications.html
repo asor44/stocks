@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Candidatures - Admin{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Candidatures</h2>
+                <div>
+                    <!-- Filtres par statut -->
+                    <div class="btn-group mb-2 w-100" role="group">
+                        <a href="{{ url_for('admin.applications', status='all', promotion=promotion_filter) }}" class="btn btn-outline-primary {{ 'active' if status_filter == 'all' else '' }}">
+                            Toutes
+                        </a>
+                        <a href="{{ url_for('admin.applications', status='pending', promotion=promotion_filter) }}" class="btn btn-outline-warning {{ 'active' if status_filter == 'pending' else '' }}">
+                            En Attente
+                        </a>
+                        <a href="{{ url_for('admin.applications', status='approved', promotion=promotion_filter) }}" class="btn btn-outline-success {{ 'active' if status_filter == 'approved' else '' }}">
+                            Approuvées
+                        </a>
+                        <a href="{{ url_for('admin.applications', status='rejected', promotion=promotion_filter) }}" class="btn btn-outline-danger {{ 'active' if status_filter == 'rejected' else '' }}">
+                            Rejetées
+                        </a>
+                    </div>
+                    
+                    <!-- Filtres par promotion -->
+                    <div class="btn-group w-100" role="group">
+                        <a href="{{ url_for('admin.applications', status=status_filter, promotion='all') }}" class="btn btn-outline-secondary {{ 'active' if promotion_filter == 'all' else '' }}">
+                            Toutes Promotions
+                        </a>
+                        {% for year in promotion_years %}
+                        <a href="{{ url_for('admin.applications', status=status_filter, promotion=year) }}" class="btn btn-outline-secondary {{ 'active' if promotion_filter|string == year|string else '' }}">
+                            {{ year }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if applications %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Candidat</th>
+                                <th>Date de Naissance</th>
+                                <th>Email</th>
+                                <th>Promotion</th>
+                                <th>Date de Soumission</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for application in applications %}
+                            <tr>
+                                <td>{{ application.id }}</td>
+                                <td>{{ application.candidate.first_name }} {{ application.candidate.last_name }}</td>
+                                <td>{{ application.candidate.date_of_birth.strftime('%Y-%m-%d') }}</td>
+                                <td>{{ application.candidate.email }}</td>
+                                <td>
+                                    {% if application.promotion_year %}
+                                    <span class="badge bg-info">{{ application.promotion_year }}</span>
+                                    {% else %}
+                                    <span class="text-muted">Non définie</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ application.application_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>
+                                    {% if application.status == 'pending' %}
+                                    <span class="badge bg-warning">En Attente</span>
+                                    {% elif application.status == 'approved' %}
+                                    <span class="badge bg-success">Approuvée</span>
+                                    {% elif application.status == 'rejected' %}
+                                    <span class="badge bg-danger">Rejetée</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('admin.application_detail', application_id=application.id) }}" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-eye me-1"></i>Voir
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>Aucune candidature trouvée correspondant aux filtres sélectionnés.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if period %}Modifier{% else %}Ajouter{% endif %} une période d'inscription | Acadef
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Administration</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin_settings.index') }}">Paramètres</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin_settings.application_periods') }}">Périodes d'inscription</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        {% if period %}Modifier{% else %}Ajouter{% endif %}
+                    </li>
+                </ol>
+            </nav>
+            
+            <h1 class="mb-4">{% if period %}Modifier{% else %}Ajouter{% endif %} une période d'inscription</h1>
+            
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Nom de la période <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" name="name" required
+                                       value="{{ period.name if period else '' }}">
+                                <div class="form-text">Par exemple : "Inscriptions 2024-2025", "Admissions mai 2024", etc.</div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="promotion_year" class="form-label">Année de promotion <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="promotion_year" name="promotion_year" required min="2000" max="2100"
+                                       value="{{ period.promotion_year if period else (current_year + 1) }}">
+                                <div class="form-text">L'année scolaire pour laquelle les candidats s'inscrivent.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="start_date" class="form-label">Date de début <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="start_date" name="start_date" required
+                                       value="{{ period.start_date.strftime('%Y-%m-%d') if period else '' }}">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="end_date" class="form-label">Date de fin <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="end_date" name="end_date" required
+                                       value="{{ period.end_date.strftime('%Y-%m-%d') if period else '' }}">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="is_active" name="is_active"
+                                   {% if period and period.is_active %}checked{% endif %}>
+                            <label class="form-check-label" for="is_active">Période active</label>
+                            <div class="form-text">Si cette option est activée, cette période sera la seule période active. Les inscriptions ne sont possibles que pendant une période active.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3">{{ period.description if period else '' }}</textarea>
+                            <div class="form-text">Informations supplémentaires sur cette période d'inscription (facultatif).</div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                {% if period %}Enregistrer les modifications{% else %}Créer la période{% endif %}
+                            </button>
+                            <a href="{{ url_for('admin_settings.application_periods') }}" class="btn btn-secondary ms-2">Annuler</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

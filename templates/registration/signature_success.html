@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Signature Réussie{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <i class="fas fa-check-circle text-success fa-5x mb-3"></i>
+                    <h1 class="card-title">Signature Réussie!</h1>
+                    <p class="card-text">Votre document a été signé avec succès.</p>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        {% if signing_process and not signing_process.guardian_signed %}
+                            Un email a été envoyé au tuteur légal pour qu'il signe également ce document.
+                        {% elif signing_process and not signing_process.candidate_signed %}
+                            Un email a été envoyé au candidat pour qu'il signe également ce document.
+                        {% else %}
+                            Le processus de signature est maintenant complet pour ce document.
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mt-4">
+                        <a href="{{ url_for('registration.multi_step_register', step=4, candidate_id=candidate_id) }}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Retour à l'inscription
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

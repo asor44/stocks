@@ -1,0 +1,445 @@
+{% extends 'base.html' %}
+
+{% block title %}Mon Tableau de Bord{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="mb-0"><i class="fas fa-user-circle me-2"></i>Mon Tableau de Bord</h2>
+            </div>
+            <div class="card-body">
+                <h3>Bienvenue, {{ current_user.username }}</h3>
+                <p class="text-muted">
+                    Ceci est votre tableau de bord personnel où vous pouvez consulter l'état de votre candidature,
+                    gérer vos documents et mettre à jour vos informations.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Candidate Info (if current user is a candidate) -->
+    {% if current_user.candidate %}
+    <div class="col-lg-6">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="fas fa-tasks me-2"></i>Progression de votre Candidature</h3>
+            </div>
+            <div class="card-body">
+                <div class="progress mb-4" style="height: 25px;">
+                    {% if current_user.candidate.application_status == 'step1' %}
+                    <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                    {% elif current_user.candidate.application_status == 'step2' %}
+                    <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div>
+                    {% elif current_user.candidate.application_status == 'step3' %}
+                    <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">40%</div>
+                    {% elif current_user.candidate.application_status == 'step4' %}
+                    <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60%</div>
+                    {% elif current_user.candidate.application_status == 'step5' %}
+                    <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">80%</div>
+                    {% elif current_user.candidate.application_status == 'pending' %}
+                    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">En attente de validation</div>
+                    {% elif current_user.candidate.application_status == 'approved' %}
+                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Candidature approuvée</div>
+                    {% elif current_user.candidate.application_status == 'rejected' %}
+                    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Candidature refusée</div>
+                    {% endif %}
+                </div>
+                
+                <div class="d-grid gap-2">
+                    {% if current_user.candidate.application_status == 'step1' %}
+                    <a href="{{ url_for('registration.multi_step_register', step=1) }}" class="btn btn-primary">
+                        <i class="fas fa-play-circle me-2"></i>Commencer mon inscription
+                    </a>
+                    {% elif current_user.candidate.application_status == 'step2' %}
+                    <a href="{{ url_for('registration.multi_step_register', step=2, candidate_id=current_user.candidate.id) }}" class="btn btn-primary">
+                        <i class="fas fa-clipboard-list me-2"></i>Continuer - Étape 2: Mensurations
+                    </a>
+                    {% elif current_user.candidate.application_status == 'step3' %}
+                    <a href="{{ url_for('registration.multi_step_register', step=3, candidate_id=current_user.candidate.id) }}" class="btn btn-primary">
+                        <i class="fas fa-users me-2"></i>Continuer - Étape 3: Tuteurs et Contact d'Urgence
+                    </a>
+                    {% elif current_user.candidate.application_status == 'step4' %}
+                    <a href="{{ url_for('registration.multi_step_register', step=4, candidate_id=current_user.candidate.id) }}" class="btn btn-primary">
+                        <i class="fas fa-file-signature me-2"></i>Continuer - Étape 4: Documents à Signer
+                    </a>
+                    {% elif current_user.candidate.application_status == 'step5' %}
+                    <a href="{{ url_for('registration.multi_step_register', step=5, candidate_id=current_user.candidate.id) }}" class="btn btn-primary">
+                        <i class="fas fa-check-circle me-2"></i>Continuer - Étape 5: Finalisation
+                    </a>
+                    {% elif current_user.candidate.application_status == 'pending' %}
+                    <button class="btn btn-warning" disabled>
+                        <i class="fas fa-hourglass-half me-2"></i>Candidature en cours d'examen
+                    </button>
+                    {% elif current_user.candidate.application_status == 'approved' %}
+                    <button class="btn btn-success" disabled>
+                        <i class="fas fa-check-circle me-2"></i>Candidature approuvée
+                    </button>
+                    {% elif current_user.candidate.application_status == 'rejected' %}
+                    <button class="btn btn-danger" disabled>
+                        <i class="fas fa-times-circle me-2"></i>Candidature refusée
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-id-card me-2"></i>Vos Informations</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Nom Complet</dt>
+                    <dd class="col-sm-8">{{ current_user.candidate.first_name }} {{ current_user.candidate.last_name }}</dd>
+                    
+                    <dt class="col-sm-4">Date de Naissance</dt>
+                    <dd class="col-sm-8">{{ current_user.candidate.date_of_birth.strftime('%d/%m/%Y') }}</dd>
+                    
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8">{{ current_user.candidate.email }}</dd>
+                    
+                    <dt class="col-sm-4">Téléphone</dt>
+                    <dd class="col-sm-8">{{ current_user.candidate.phone }}</dd>
+                    
+                    <dt class="col-sm-4">Adresse</dt>
+                    <dd class="col-sm-8">{{ current_user.candidate.address }}, {{ current_user.candidate.city }}, {{ current_user.candidate.postal_code }}</dd>
+                </dl>
+                <div class="text-end">
+                    <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <i class="fas fa-edit me-1"></i>Modifier le Profil
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-clipboard-check me-2"></i>Statut de la Candidature</h3>
+            </div>
+            <div class="card-body">
+                {% if current_user.candidate.application %}
+                <div class="text-center mb-3">
+                    {% if current_user.candidate.application.status == 'pending' %}
+                    <span class="badge bg-warning fs-5 p-2">En Attente d'Examen</span>
+                    {% elif current_user.candidate.application.status == 'approved' %}
+                    <span class="badge bg-success fs-5 p-2">Approuvée</span>
+                    {% elif current_user.candidate.application.status == 'rejected' %}
+                    <span class="badge bg-danger fs-5 p-2">Non Approuvée</span>
+                    {% endif %}
+                </div>
+                
+                <p class="mb-0">
+                    <strong>Date de Candidature:</strong> {{ current_user.candidate.application.application_date.strftime('%d/%m/%Y') }}
+                </p>
+                {% if current_user.candidate.application.review_date %}
+                <p class="mb-0">
+                    <strong>Date d'Examen:</strong> {{ current_user.candidate.application.review_date.strftime('%d/%m/%Y') }}
+                </p>
+                {% endif %}
+                {% if current_user.candidate.application.notes %}
+                <div class="mt-3">
+                    <strong>Notes:</strong>
+                    <p class="fst-italic">{{ current_user.candidate.application.notes }}</p>
+                </div>
+                {% endif %}
+                {% else %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>Aucune candidature trouvée. Veuillez vous inscrire.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-file-alt me-2"></i>Documents</h3>
+            </div>
+            <div class="card-body">
+                {% if current_user.candidate.application and current_user.candidate.application.documents %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Document</th>
+                                <th>Type</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for document in current_user.candidate.application.documents %}
+                            <tr>
+                                <td>{{ document.original_filename }}</td>
+                                <td>{{ document.document_type|title }}</td>
+                                <td>
+                                    {% if document.status == 'pending' %}
+                                    <span class="badge bg-warning">En Attente</span>
+                                    {% elif document.status == 'signed_candidate' %}
+                                    <span class="badge bg-info">Signé par Vous</span>
+                                    {% elif document.status == 'signed_guardian' %}
+                                    <span class="badge bg-primary">Signé par le Tuteur</span>
+                                    {% elif document.status == 'complete' %}
+                                    <span class="badge bg-success">Terminé</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('admin.view_document', document_id=document.id) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye me-1"></i>Voir
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>Aucun document trouvé.
+                </div>
+                {% endif %}
+                
+                <!-- Upload Document Button -->
+                {% if current_user.candidate.application and current_user.candidate.application.status == 'pending' %}
+                <div class="text-center mt-3">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#uploadDocumentModal">
+                        <i class="fas fa-file-upload me-2"></i>Télécharger un Document Supplémentaire
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-users me-2"></i>Mes Tuteurs</h3>
+            </div>
+            <div class="card-body">
+                {% if current_user.candidate.guardians %}
+                <div class="accordion" id="guardiansAccordion">
+                    {% for guardian in current_user.candidate.guardians %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{ guardian.id }}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ guardian.id }}" aria-expanded="false" aria-controls="collapse{{ guardian.id }}">
+                                {{ guardian.first_name }} {{ guardian.last_name }} - {{ guardian.relationship }}
+                            </button>
+                        </h2>
+                        <div id="collapse{{ guardian.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ guardian.id }}" data-bs-parent="#guardiansAccordion">
+                            <div class="accordion-body">
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-4">Email</dt>
+                                    <dd class="col-sm-8">{{ guardian.email }}</dd>
+                                    
+                                    <dt class="col-sm-4">Téléphone</dt>
+                                    <dd class="col-sm-8">{{ guardian.phone }}</dd>
+                                    
+                                    <dt class="col-sm-4">Adresse</dt>
+                                    <dd class="col-sm-8">{{ guardian.address }}, {{ guardian.city }}, {{ guardian.postal_code }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>Aucune information de tuteur trouvée.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Guardian Info (if current user is a guardian) -->
+    {% if current_user.guardian %}
+    <div class="col-lg-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-id-card me-2"></i>Vos Informations</h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Nom Complet</dt>
+                    <dd class="col-sm-8">{{ current_user.guardian.first_name }} {{ current_user.guardian.last_name }}</dd>
+                    
+                    <dt class="col-sm-4">Relation</dt>
+                    <dd class="col-sm-8">{{ current_user.guardian.relationship }}</dd>
+                    
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8">{{ current_user.guardian.email }}</dd>
+                    
+                    <dt class="col-sm-4">Téléphone</dt>
+                    <dd class="col-sm-8">{{ current_user.guardian.phone }}</dd>
+                    
+                    <dt class="col-sm-4">Adresse</dt>
+                    <dd class="col-sm-8">{{ current_user.guardian.address }}, {{ current_user.guardian.city }}, {{ current_user.guardian.postal_code }}</dd>
+                </dl>
+                <div class="text-end">
+                    <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <i class="fas fa-edit me-1"></i>Modifier le Profil
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="fas fa-tasks me-2"></i>Progression de la Candidature</h3>
+            </div>
+            <div class="card-body">
+                <div class="progress mb-4" style="height: 25px;">
+                    {% if current_user.guardian.candidate.application_status == 'step1' %}
+                    <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                    {% elif current_user.guardian.candidate.application_status == 'step2' %}
+                    <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div>
+                    {% elif current_user.guardian.candidate.application_status == 'step3' %}
+                    <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">40%</div>
+                    {% elif current_user.guardian.candidate.application_status == 'step4' %}
+                    <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60%</div>
+                    {% elif current_user.guardian.candidate.application_status == 'step5' %}
+                    <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">80%</div>
+                    {% elif current_user.guardian.candidate.application_status == 'pending' %}
+                    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">En attente de validation</div>
+                    {% elif current_user.guardian.candidate.application_status == 'approved' %}
+                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Candidature approuvée</div>
+                    {% elif current_user.guardian.candidate.application_status == 'rejected' %}
+                    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Candidature refusée</div>
+                    {% endif %}
+                </div>
+                
+                <h5>Candidature de {{ current_user.guardian.candidate.first_name }} {{ current_user.guardian.candidate.last_name }}</h5>
+                
+                <dl class="row">
+                    <dt class="col-sm-4">Statut actuel</dt>
+                    <dd class="col-sm-8">
+                        {% if current_user.guardian.candidate.application_status == 'step1' %}
+                        <span class="badge bg-info">Étape 1 - Informations Personnelles</span>
+                        {% elif current_user.guardian.candidate.application_status == 'step2' %}
+                        <span class="badge bg-info">Étape 2 - Mensurations</span>
+                        {% elif current_user.guardian.candidate.application_status == 'step3' %}
+                        <span class="badge bg-info">Étape 3 - Tuteurs et Contact d'Urgence</span>
+                        {% elif current_user.guardian.candidate.application_status == 'step4' %}
+                        <span class="badge bg-info">Étape 4 - Documents à Signer</span>
+                        {% elif current_user.guardian.candidate.application_status == 'step5' %}
+                        <span class="badge bg-info">Étape 5 - Finalisation</span>
+                        {% elif current_user.guardian.candidate.application_status == 'pending' %}
+                        <span class="badge bg-warning">En attente de validation</span>
+                        {% elif current_user.guardian.candidate.application_status == 'approved' %}
+                        <span class="badge bg-success">Candidature approuvée</span>
+                        {% elif current_user.guardian.candidate.application_status == 'rejected' %}
+                        <span class="badge bg-danger">Candidature refusée</span>
+                        {% endif %}
+                    </dd>
+                    
+                    <dt class="col-sm-4">Date de Naissance</dt>
+                    <dd class="col-sm-8">{{ current_user.guardian.candidate.date_of_birth.strftime('%d/%m/%Y') }}</dd>
+                    
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8">{{ current_user.guardian.candidate.email }}</dd>
+                    
+                    <dt class="col-sm-4">Téléphone</dt>
+                    <dd class="col-sm-8">{{ current_user.guardian.candidate.phone }}</dd>
+                </dl>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-clipboard-check me-2"></i>Statut de la Candidature</h3>
+            </div>
+            <div class="card-body">
+                {% if current_user.guardian.candidate.application %}
+                <div class="text-center mb-3">
+                    {% if current_user.guardian.candidate.application.status == 'pending' %}
+                    <span class="badge bg-warning fs-5 p-2">En Attente d'Examen</span>
+                    {% elif current_user.guardian.candidate.application.status == 'approved' %}
+                    <span class="badge bg-success fs-5 p-2">Approuvée</span>
+                    {% elif current_user.guardian.candidate.application.status == 'rejected' %}
+                    <span class="badge bg-danger fs-5 p-2">Non Approuvée</span>
+                    {% endif %}
+                </div>
+                
+                <p class="mb-0">
+                    <strong>Date de Candidature:</strong> {{ current_user.guardian.candidate.application.application_date.strftime('%d/%m/%Y') }}
+                </p>
+                {% if current_user.guardian.candidate.application.review_date %}
+                <p class="mb-0">
+                    <strong>Date d'Examen:</strong> {{ current_user.guardian.candidate.application.review_date.strftime('%d/%m/%Y') }}
+                </p>
+                {% endif %}
+                {% else %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>Aucune candidature trouvée.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Upload Document Modal -->
+<div class="modal fade" id="uploadDocumentModal" tabindex="-1" aria-labelledby="uploadDocumentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadDocumentModalLabel">Télécharger un Document</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('registration.upload_document', application_id=current_user.candidate.application.id if current_user.candidate and current_user.candidate.application else 0) }}" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="document_type" class="form-label">Type de Document</label>
+                        <select class="form-select" id="document_type" name="document_type" required>
+                            <option value="">Sélectionnez le type de document...</option>
+                            <option value="medical_certificate">Certificat Médical</option>
+                            <option value="id_card">Carte d'Identité/Passeport</option>
+                            <option value="photo">Photo Récente</option>
+                            <option value="other">Autre Document</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="document" class="form-label">Sélectionner le Fichier</label>
+                        <input class="form-control" type="file" id="document" name="document" onchange="previewFile(this)" required>
+                        <div class="mt-2" id="file-preview"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload me-2"></i>Télécharger le Document
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Modifier le Profil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Pour mettre à jour vos informations de profil, veuillez contacter l'administrateur.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

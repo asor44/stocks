@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardian Signature Required</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 0 0 5px 5px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .button {
+            display: inline-block;
+            background-color: #0d6efd;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .highlight {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #0d6efd;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Guardian Signature Required</h1>
+    </div>
+    <div class="content">
+        <p>Dear {{ guardian.first_name }} {{ guardian.last_name }},</p>
+        
+        <p>You are receiving this email because {{ candidate.first_name }} {{ candidate.last_name }} has listed you as their {{ guardian.relationship }}. 
+        They have completed their portion of the registration process, and now your signature is required.</p>
+        
+        <div class="highlight">
+            <p><strong>Candidate Information:</strong></p>
+            <ul>
+                <li><strong>Name:</strong> {{ candidate.first_name }} {{ candidate.last_name }}</li>
+                <li><strong>Date of Birth:</strong> {{ candidate.date_of_birth.strftime('%d/%m/%Y') }}</li>
+                <li><strong>Email:</strong> {{ candidate.email }}</li>
+            </ul>
+        </div>
+        
+        <p>Please click the button below to review and sign the registration document:</p>
+        
+        <p style="text-align: center;">
+            <a href="{{ signing_url }}" class="button">Review and Sign Document</a>
+        </p>
+        
+        <p>This link will expire in 7 days. After you sign the document, additional documents may be requested from the candidate to complete the registration process.</p>
+        
+        <p>If you have any questions or need assistance, please reply to this email.</p>
+        
+        <p>Best regards,<br>
+        The Registration Team</p>
+    </div>
+    <div class="footer">
+        <p>This is an automated message. Please do not reply directly to this email.</p>
+    </div>
+</body>
+</html>

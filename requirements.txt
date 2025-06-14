@@ -1,0 +1,12 @@
+Flask
+gunicorn
+psycopg2-binary # Ou mysqlclient si vous utilisez MySQL pour cette app
+python-dotenv
+requests
+flask_login
+flask_sqlalchemy
+flask_mail
+PyMySQL
+mysql-connector-python
+reportlab
+werkzeug 

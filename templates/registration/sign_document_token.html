@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Signature de Document{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .signature-container {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .document-preview {
+        max-width: 100%;
+        height: 600px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+    }
+    .signing-info {
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+    .signature-form {
+        border-top: 1px solid #ddd;
+        padding-top: 20px;
+    }
+    .document-info {
+        border-left: 4px solid #0d6efd;
+        padding: 10px 15px;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">Signature Électronique de Document</h1>
+            
+            {% include 'includes/messages.html' %}
+            
+            <div class="document-info">
+                <h4>{{ document.document_type_display }}</h4>
+                <p class="mb-0"><strong>Candidat:</strong> {{ document.application.candidate.first_name }} {{ document.application.candidate.last_name }}</p>
+                <p class="mb-0"><strong>Fichier:</strong> {{ document.original_filename }}</p>
+            </div>
+            
+            <div class="signature-container">
+                <h3>Aperçu du document</h3>
+                <iframe src="{{ url_for('registration.view_document_by_id', document_id=document.id) }}" class="document-preview"></iframe>
+                
+                <div class="signing-info alert alert-info">
+                    <p><i class="fas fa-info-circle me-2"></i> En signant ce document, vous confirmez avoir lu et accepté son contenu. Votre signature électronique est juridiquement équivalente à une signature manuscrite.</p>
+                </div>
+                
+                <div class="signature-form">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="signer_type" class="form-label">Je signe en tant que:</label>
+                            <select class="form-select" id="signer_type" name="signer_type" required>
+                                <option value="candidate">Candidat</option>
+                                <option value="guardian">Tuteur légal</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Votre nom complet</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                            <div class="form-text">Tapez votre nom complet tel qu'il figure sur vos documents officiels.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="acceptance" name="acceptance" required>
+                                <label class="form-check-label" for="acceptance">
+                                    Je certifie avoir lu ce document et je l'accepte électroniquement.
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-home me-2"></i>Retour à l'accueil
+                            </a>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-signature me-2"></i>Signer le document
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

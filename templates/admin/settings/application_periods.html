@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Gestion des périodes d'inscription | Acadef{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Administration</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin_settings.index') }}">Paramètres</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Périodes d'inscription</li>
+                </ol>
+            </nav>
+            
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>Périodes d'inscription</h1>
+                <a href="{{ url_for('admin_settings.add_application_period') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Ajouter une période
+                </a>
+            </div>
+            
+            {% if periods %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nom</th>
+                            <th>Période</th>
+                            <th>Année de promotion</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for period in periods %}
+                        <tr>
+                            <td>{{ period.name }}</td>
+                            <td>Du {{ period.start_date.strftime('%d/%m/%Y') }} au {{ period.end_date.strftime('%d/%m/%Y') }}</td>
+                            <td>{{ period.promotion_year }}</td>
+                            <td>
+                                {% if period.is_active %}
+                                <span class="badge bg-success">Active</span>
+                                {% else %}
+                                <span class="badge bg-secondary">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ url_for('admin_settings.edit_application_period', period_id=period.id) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-edit"></i> Modifier
+                                    </a>
+                                    <form method="post" action="{{ url_for('admin_settings.toggle_application_period', period_id=period.id) }}" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-outline-{% if period.is_active %}warning{% else %}success{% endif %}">
+                                            {% if period.is_active %}
+                                            <i class="fas fa-toggle-off"></i> Désactiver
+                                            {% else %}
+                                            <i class="fas fa-toggle-on"></i> Activer
+                                            {% endif %}
+                                        </button>
+                                    </form>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" 
+                                            data-bs-toggle="modal" data-bs-target="#deleteModal{{ period.id }}">
+                                        <i class="fas fa-trash"></i> Supprimer
+                                    </button>
+                                </div>
+                                
+                                <!-- Modal de confirmation de suppression -->
+                                <div class="modal fade" id="deleteModal{{ period.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ period.id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel{{ period.id }}">Confirmer la suppression</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Êtes-vous sûr de vouloir supprimer la période d'inscription "{{ period.name }}" ?
+                                                <p class="text-danger mt-2">
+                                                    <i class="fas fa-exclamation-triangle"></i> 
+                                                    Cette action est irréversible.
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                <form method="post" action="{{ url_for('admin_settings.delete_application_period', period_id=period.id) }}">
+                                                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> Aucune période d'inscription n'a été créée pour le moment.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

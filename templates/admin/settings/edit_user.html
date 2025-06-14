@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Modifier un utilisateur | Acadef{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Administration</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin_settings.index') }}">Paramètres</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin_settings.users') }}">Gestion des utilisateurs</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Modifier un utilisateur</li>
+                </ol>
+            </nav>
+            
+            <h1 class="mb-4">Modifier un utilisateur</h1>
+            
+            {% include 'includes/messages.html' %}
+            
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="post" action="{{ url_for('admin_settings.edit_user', user_id=user.id) }}">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nom d'utilisateur</label>
+                            <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Adresse email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                            <div class="form-text">Laissez vide pour conserver le mot de passe actuel. Le mot de passe doit contenir au moins 8 caractères.</div>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin" {% if user.is_admin %}checked{% endif %}>
+                            <label class="form-check-label" for="is_admin">Administrateur</label>
+                            <div class="form-text">Les administrateurs ont accès à toutes les fonctionnalités du système.</div>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="is_active" name="is_active" {% if user.is_active %}checked{% endif %}>
+                            <label class="form-check-label" for="is_active">Compte actif</label>
+                            <div class="form-text">Décochez pour désactiver temporairement ce compte utilisateur.</div>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('admin_settings.users') }}" class="btn btn-secondary me-md-2">Annuler</a>
+                            <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

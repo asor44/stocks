@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Système d'Inscription des Candidats - Accueil{% endblock %}
+
+{% block content %}
+<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold">Bienvenue sur le Système d'Inscription des Candidats</h1>
+    <div class="col-lg-8 mx-auto">
+        <p class="lead mb-4">
+            Un processus optimisé pour gérer les inscriptions des candidats, la génération de documents, 
+            et les workflows de signature multipartite avec un processus d'approbation administratif.
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            {% if registration_open %}
+                <a href="{{ url_for('registration.multi_step_register', step=1) }}" class="btn btn-primary btn-lg px-4 gap-3">
+                    <i class="fas fa-user-plus me-2"></i>Nouvelle Inscription par Étapes
+                </a>
+            {% else %}
+                <button disabled class="btn btn-secondary btn-lg px-4 gap-3">
+                    <i class="fas fa-user-plus me-2"></i>Nouvelle Inscription par Étapes
+                </button>
+            {% endif %}
+            
+            {% if current_user.is_authenticated %}
+                {% if current_user.is_admin %}
+                <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="fas fa-tachometer-alt me-2"></i>Tableau de Bord Admin
+                </a>
+                {% else %}
+                <a href="{{ url_for('auth.dashboard') }}" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="fas fa-user-circle me-2"></i>Mon Tableau de Bord
+                </a>
+                {% endif %}
+            {% else %}
+                <a href="{{ url_for('auth.login') }}" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="fas fa-sign-in-alt me-2"></i>Connexion
+                </a>
+            {% endif %}
+        </div>
+        <div class="mt-3">
+            <div class="alert {% if registration_open %}alert-success{% else %}alert-warning{% endif %} text-center">
+                <i class="fas {% if registration_open %}fa-calendar-check{% else %}fa-calendar-times{% endif %} me-2"></i>
+                {{ registration_message }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+    <div class="col">
+        <div class="card h-100 dashboard-card">
+            <div class="card-body text-center">
+                <i class="fas fa-clipboard-list fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Inscription Facile</h5>
+                <p class="card-text">Complétez un formulaire simple avec vos informations personnelles et les détails de vos tuteurs légaux.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100 dashboard-card">
+            <div class="card-body text-center">
+                <i class="fas fa-file-signature fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Signatures Numériques</h5>
+                <p class="card-text">Signez les documents électroniquement et faites-les signer également par vos tuteurs légaux.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100 dashboard-card">
+            <div class="card-body text-center">
+                <i class="fas fa-check-circle fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Approbation Simple</h5>
+                <p class="card-text">Une fois tous les documents signés, un administrateur examinera et approuvera votre candidature.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-5">
+    <div class="card-header">
+        <h3>Processus d'Inscription par Étapes</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3 text-center mb-3">
+                <div class="p-3">
+                    <span class="badge bg-primary rounded-circle p-3">1</span>
+                    <h5 class="mt-3">Informations personnelles</h5>
+                    <p>Remplissez vos données personnelles et joignez les documents d'identité requis.</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center mb-3">
+                <div class="p-3">
+                    <span class="badge bg-primary rounded-circle p-3">2</span>
+                    <h5 class="mt-3">Mensurations</h5>
+                    <p>Indiquez vos mesures pour la préparation des uniformes et équipements.</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center mb-3">
+                <div class="p-3">
+                    <span class="badge bg-primary rounded-circle p-3">3</span>
+                    <h5 class="mt-3">Tuteurs légaux</h5>
+                    <p>Ajoutez les informations de vos tuteurs légaux et contact d'urgence.</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center mb-3">
+                <div class="p-3">
+                    <span class="badge bg-primary rounded-circle p-3">4</span>
+                    <h5 class="mt-3">Documents à signer</h5>
+                    <p>Téléchargez les documents officiels, signez-les et téléversez-les.</p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <div class="alert alert-info text-center">
+                <i class="fas fa-info-circle me-2"></i>
+                Après validation de votre dossier, vous serez invité à sélectionner un créneau pour un entretien.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

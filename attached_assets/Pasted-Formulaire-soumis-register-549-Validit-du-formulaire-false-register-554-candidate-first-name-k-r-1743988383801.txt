@@ -1,0 +1,58 @@
+Formulaire soumis!
+register:549 Validité du formulaire: false
+register:554 candidate_first_name: k
+register:554 candidate_last_name: k
+register:554 candidate_dob: 0001-01-01
+register:554 candidate_birth_place: k
+register:554 candidate_email: k@kk.fr
+register:554 candidate_phone: 0
+register:554 candidate_mobile_phone: 0
+register:554 candidate_address: k
+register:554 candidate_city: k
+register:554 candidate_postal_code: k
+register:554 candidate_school: k
+register:554 candidate_grade: k
+register:554 candidate_emergency_contact_name: k
+register:554 candidate_emergency_contact_phone: k
+register:554 candidate_additional_info: k
+register:554 candidate_image_rights: on
+register:554 medical_certificate_date: 
+register:554 medical_doctor_name: 
+register:554 medical_additional_info: 
+register:554 measurement_height: 
+register:554 measurement_weight: 
+register:554 measurement_shoe_size: 
+register:554 measurement_head_size: 
+register:554 measurement_neck_size: 
+register:554 measurement_chest_size: 
+register:554 measurement_waist_size: 
+register:554 measurement_bust_height: 
+register:554 measurement_inseam: 
+register:554 num_guardians: 1
+register:554 guardian_1_first_name: k
+register:554 guardian_1_last_name: k
+register:554 guardian_1_relationship: Parent
+register:554 guardian_1_email: k@k.fr
+register:554 guardian_1_phone: 0
+register:554 guardian_1_address: k
+register:554 guardian_1_city: k
+register:554 guardian_1_postal_code: k
+register:554 guardian_1_first_name: 
+register:554 guardian_1_last_name: 
+register:554 guardian_1_relationship: 
+register:554 guardian_1_email: 
+register:554 guardian_1_phone: 
+register:554 guardian_1_address: 
+register:554 guardian_1_city: 
+register:554 guardian_1_postal_code: 
+register:554 confirm_info: on
+register:560 Formulaire invalide, soumission empêchée
+register:564 Champs invalides: NodeList(8) [input#guardian_1_first_name.form-control, input#guardian_1_last_name.form-control, select#guardian_1_relationship.form-select, input#guardian_1_email.form-control, input#guardian_1_phone.form-control, input#guardian_1_address.form-control, input#guardian_1_city.form-control, input#guardian_1_postal_code.form-control]
+register:566 Champ invalide: guardian_1_first_name guardian_1_first_name
+register:566 Champ invalide: guardian_1_last_name guardian_1_last_name
+register:566 Champ invalide: guardian_1_relationship guardian_1_relationship
+register:566 Champ invalide: guardian_1_email guardian_1_email
+register:566 Champ invalide: guardian_1_phone guardian_1_phone
+register:566 Champ invalide: guardian_1_address guardian_1_address
+register:566 Champ invalide: guardian_1_city guardian_1_city
+register:566 Champ invalide: guardian_1_postal_code guardian_1_postal_code

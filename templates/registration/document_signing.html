@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block title %}Signer le Document{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0">
+                    <i class="fas fa-file-signature me-2"></i>
+                    {% if is_candidate_view %}
+                    Signez Vos Documents d'Inscription
+                    {% elif is_guardian_view %}
+                    Signature du Tuteur Requise
+                    {% else %}
+                    Signature du Document
+                    {% endif %}
+                </h2>
+            </div>
+            <div class="card-body">
+                {% if signing_process.expiry_date < now() %}
+                <div class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Ce lien de signature a expiré. Veuillez contacter l'administrateur pour obtenir de l'aide.
+                </div>
+                {% else %}
+                
+                <!-- Document Information -->
+                <div class="mb-4">
+                    <h4>Détails du Document</h4>
+                    <p>
+                        <strong>Type de Document:</strong> {{ document.document_type|title }}<br>
+                        <strong>Date de Création:</strong> {{ document.uploaded_date.strftime('%Y-%m-%d %H:%M') }}<br>
+                        <strong>Candidat:</strong> {{ candidate.first_name }} {{ candidate.last_name }}<br>
+                        <strong>Statut:</strong> 
+                        {% if document.status == 'pending' %}
+                        <span class="badge bg-warning">En Attente de Signature</span>
+                        {% elif document.status == 'signed_candidate' %}
+                        <span class="badge bg-info">Signé par le Candidat</span>
+                        {% elif document.status == 'signed_guardian' %}
+                        <span class="badge bg-primary">Signé par le Tuteur</span>
+                        {% elif document.status == 'complete' %}
+                        <span class="badge bg-success">Terminé</span>
+                        {% endif %}
+                    </p>
+                </div>
+                
+                <!-- Document Viewer (Embedded PDF) -->
+                <div class="mb-4">
+                    <h4>Aperçu du Document</h4>
+                    <div class="ratio ratio-16x9">
+                        <iframe src="{{ url_for('admin.view_document', document_id=document.id) }}" frameborder="0"></iframe>
+                    </div>
+                </div>
+                
+                <!-- Signature Form -->
+                <form method="POST" class="needs-validation" novalidate>
+                    <!-- Signature Pad -->
+                    <div class="mb-4">
+                        <h4>
+                            {% if is_candidate_view %}
+                            Signature du Candidat
+                            {% elif is_guardian_view %}
+                            Signature du Tuteur
+                            {% endif %}
+                        </h4>
+                        <p class="text-muted">Veuillez signer dans la zone ci-dessous à l'aide de votre souris ou écran tactile.</p>
+                        
+                        <div class="mb-3">
+                            <canvas id="signature-pad" class="signature-pad" width="600" height="200"></canvas>
+                            <input type="hidden" id="signature_data" name="signature_data" data-signature-input="signature-pad">
+                            <div class="invalid-feedback">La signature est requise</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-outline-secondary" data-clear-signature="signature-pad">
+                                <i class="fas fa-eraser me-1"></i>Effacer la Signature
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Confirmation Checkbox -->
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="confirm" name="confirm" required>
+                            <label class="form-check-label" for="confirm">
+                                Je confirme avoir lu et compris ce document, et ma signature électronique 
+                                doit être considérée comme légalement contraignante au même titre qu'une signature manuscrite.
+                            </label>
+                            <div class="invalid-feedback">
+                                Vous devez confirmer avant de signer.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hidden field for signer type -->
+                    {% if is_candidate_view %}
+                    <input type="hidden" name="signer_type" value="candidate">
+                    {% elif is_guardian_view %}
+                    <input type="hidden" name="signer_type" value="guardian">
+                    {% endif %}
+                    
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-signature me-2"></i>Signer le Document
+                        </button>
+                    </div>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize signature pad
+        const canvas = document.getElementById('signature-pad');
+        const signaturePad = new SignaturePad(canvas, {
+            backgroundColor: 'rgb(255, 255, 255)'
+        });
+        
+        // Clear button functionality
+        const clearBtn = document.querySelector('[data-clear-signature="signature-pad"]');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function() {
+                signaturePad.clear();
+                
+                // Clear the hidden input value
+                const hiddenInput = document.querySelector('[data-signature-input="signature-pad"]');
+                if (hiddenInput) {
+                    hiddenInput.value = '';
+                }
+            });
+        }
+        
+        // Handle form submission
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                // Check if signature pad is empty
+                if (signaturePad.isEmpty()) {
+                    event.preventDefault();
+                    alert('Veuillez fournir votre signature avant de soumettre.');
+                    return false;
+                }
+                
+                // Save signature data to hidden input
+                const signatureData = signaturePad.toDataURL();
+                const hiddenInput = document.getElementById('signature_data');
+                hiddenInput.value = signatureData;
+                
+                return true;
+            });
+        }
+    });
+</script>
+{% endblock %}

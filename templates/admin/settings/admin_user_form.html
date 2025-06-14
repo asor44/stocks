@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if user %}Modifier{% else %}Ajouter{% endif %} un administrateur | Acadef
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Administration</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin_settings.index') }}">Paramètres</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin_settings.admin_users') }}">Utilisateurs administrateurs</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        {% if user %}Modifier{% else %}Ajouter{% endif %}
+                    </li>
+                </ol>
+            </nav>
+            
+            <h1 class="mb-4">{% if user %}Modifier{% else %}Ajouter{% endif %} un administrateur</h1>
+            
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nom d'utilisateur <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="username" name="username" required
+                                   value="{{ user.username if user else '' }}">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Adresse email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="email" name="email" required
+                                   value="{{ user.email if user else '' }}">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">
+                                {% if user %}Nouveau mot de passe (laisser vide pour conserver l'actuel){% else %}Mot de passe <span class="text-danger">*</span>{% endif %}
+                            </label>
+                            <input type="password" class="form-control" id="password" name="password" {% if not user %}required{% endif %}>
+                            {% if user %}
+                            <div class="form-text">Laissez ce champ vide si vous ne souhaitez pas modifier le mot de passe.</div>
+                            {% endif %}
+                        </div>
+                        
+                        {% if user %}
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="is_active" name="is_active"
+                                   {% if user.is_active %}checked{% endif %}>
+                            <label class="form-check-label" for="is_active">Compte actif</label>
+                            <div class="form-text">Si cette option est désactivée, l'administrateur ne pourra pas se connecter.</div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                {% if user %}Enregistrer les modifications{% else %}Créer l'administrateur{% endif %}
+                            </button>
+                            <a href="{{ url_for('admin_settings.admin_users') }}" class="btn btn-secondary ms-2">Annuler</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Inscription Réussie{% endblock %}
+
+{% block content %}
+<div class="text-center my-5">
+    <div class="py-5">
+        <i class="fas fa-check-circle text-success fa-6x mb-4"></i>
+        <h1 class="display-4">Inscription Soumise avec Succès !</h1>
+        
+        <div class="col-lg-8 mx-auto">
+            <p class="lead mb-4">
+                Merci d'avoir soumis votre inscription. Nous vous avons envoyé un email 
+                avec des instructions pour les prochaines étapes.
+            </p>
+            
+            <div class="card mb-5">
+                <div class="card-header">
+                    <h3>Prochaines Étapes</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <div class="col">
+                            <div class="card h-100 dashboard-card">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-envelope fa-3x mb-3 text-primary"></i>
+                                    <h5 class="card-title">Vérifiez Votre Email</h5>
+                                    <p class="card-text">
+                                        Nous vous avons envoyé un email avec les documents d'inscription 
+                                        qui doivent être signés.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 dashboard-card">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-signature fa-3x mb-3 text-primary"></i>
+                                    <h5 class="card-title">Signez les Documents</h5>
+                                    <p class="card-text">
+                                        Signez les documents électroniquement et assurez-vous que vos 
+                                        tuteurs légaux les signent également.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 dashboard-card">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-file-upload fa-3x mb-3 text-primary"></i>
+                                    <h5 class="card-title">Téléchargez les Documents</h5>
+                                    <p class="card-text">
+                                        Il pourrait vous être demandé de télécharger des documents supplémentaires pour 
+                                        compléter votre candidature.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert alert-info" role="alert">
+                <i class="fas fa-info-circle me-2"></i>
+                Après que tous les documents soient signés et téléchargés, un administrateur examinera 
+                votre candidature. Vous serez informé par email de la décision.
+            </div>
+            
+            <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">
+                <i class="fas fa-home me-2"></i>Retour à l'Accueil
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

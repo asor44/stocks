@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Paramètres administrateur | Acadef{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Administration</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Paramètres</li>
+                </ol>
+            </nav>
+            
+            <h1 class="mb-4">Paramètres administratifs</h1>
+            
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Périodes d'inscription</h5>
+                            <p class="card-text">Gérez les périodes pendant lesquelles les candidats peuvent s'inscrire.</p>
+                            <a href="{{ url_for('admin_settings.application_periods') }}" class="btn btn-primary">Accéder</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Gestion des utilisateurs</h5>
+                            <p class="card-text">Gérez tous les comptes utilisateurs du système.</p>
+                            <a href="{{ url_for('admin_settings.users') }}" class="btn btn-primary">Accéder</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Utilisateurs administrateurs</h5>
+                            <p class="card-text">Gérez les comptes des utilisateurs administrateurs de la plateforme.</p>
+                            <a href="{{ url_for('admin_settings.admin_users') }}" class="btn btn-primary">Accéder</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
